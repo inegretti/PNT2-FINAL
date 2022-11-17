@@ -115,13 +115,16 @@ import Pagina from './Pagina.vue'
 
 <style scoped lang="css">
   .src-components-formulario {
-
+    display: flex;
+    justify-content: center;
   }
   .jumbotron{
-    background-color: brown;
-    color: black;
+    background-color: #0873C4;
+    color: white;
+    width: 500px;
+    margin-top: 50px;
   }
   hr{
-    background-color: black;
+    background-color: #054678;
   }
 </style>
