@@ -78,10 +78,11 @@
         this.formData= this.getDataInicial()
         this.formState._reset()
         this.mensaje="Ingreso correcto";
+        this.ingresoOk= true;
         setTimeout(() => {
           alert("redirigiendo a login")
         this.$router.push({path:"/formularioL"})  
-        }, 2000);
+        }, 1000);
         
       },
       getDataInicial(){

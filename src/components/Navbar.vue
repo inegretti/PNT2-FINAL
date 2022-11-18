@@ -9,7 +9,7 @@
     <ul class="navbar-nav">
       <li class="nav-item">
         <router-link to="/formulario">
-        <a class="nav-link" href="#">Registracion</a>
+        <a class="nav-link" href="#">Registro</a>
         </router-link>
       </li>
       <li class="nav-item">
