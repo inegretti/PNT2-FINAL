@@ -2,7 +2,7 @@
 
   <section class="src-components-formulario">
     <div class="jumbotron">
-    <h1>Registracion</h1>
+    <h1>Registro</h1>
     <hr>
     <hr>
     <br>
@@ -42,7 +42,9 @@
   </vue-form>
 
   <hr>
-  <h1>{{mensaje}}</h1>
+  <h3 :class="{ success: ingresoOk, fail: !ingresoOk }">
+    {{mensaje}}
+  </h3>
   
     </div>
   </section>
@@ -64,7 +66,8 @@
         nombreMin:5,
         nombreMax:15,
         usuarios:new Array(),
-        mensaje:""
+        mensaje:"",
+        ingresoOk: true
        
         
       }
@@ -74,11 +77,12 @@
         await this.$emit('ingreso-usuario',{nombre:this.formData.nombre,contraseña:this.formData.contraseña,email:this.formData.email})
         this.formData= this.getDataInicial()
         this.formState._reset()
-        this.mensaje="ingreso correcto";
+        this.mensaje="Ingreso correcto";
+        this.ingresoOk= true;
         setTimeout(() => {
-          alert("redirijiendo a login")
+          alert("redirigiendo a login")
         this.$router.push({path:"/formularioL"})  
-        }, 2000);
+        }, 1000);
         
       },
       getDataInicial(){
@@ -101,13 +105,28 @@
 
 <style scoped lang="css">
   .src-components-formulario {
-
+    display: flex;
+    justify-content: center;
   }
   .jumbotron{
-    background-color: brown;
-    color: black;
+    background-color: #054678;
+    color: white;
+    width: 500px;
+    margin-top: 50px;
   }
+
+  .success{
+    background-color: #0A90F7;
+    color: white;
+    border-radius: 6px;
+  }
+
+  .fail{
+    background-color: red;
+    color: white;
+  }
+
   hr{
-    background-color: black;
+    background-color: #55B2F9;
   }
 </style>
