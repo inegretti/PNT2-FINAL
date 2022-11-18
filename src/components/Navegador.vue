@@ -4,6 +4,9 @@
    <NavBar/>
     <!--<router-view @envio-usuario="evaluar($event)" :res="usuarios" @ingreso-usuario="ingresarUsuarios($event)"></router-view>-->
     <router-view :res="usuarios" @ingreso-usuario="ingresarUsuarios($event)"></router-view>
+
+
+
   </section>
 
 </template>
@@ -30,7 +33,9 @@ import NavBar from "./Navbar.vue"
      async ingresarUsuarios(usuario){
         await this.axios.post(this.$store.state.url, {nombre:usuario.nombre,contrasenia:usuario.contraseña,email:usuario.email,pendientes:[],finalizadas:[],enCurso:[]})
       },
-      
+      getLoggedIn() {
+        return this.$store.state.loggedIn
+      }
     },
     computed: {
        

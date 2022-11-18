@@ -49,9 +49,9 @@
 
   export default  {
     name: 'src-components-pagina',
-    props: ["reg","val"],
+    props: ["reg"],
     mounted () {
-        if(this.val!=true){
+        if(this.$store.state.loggedIn!=true){
           history.back()
         }
     },

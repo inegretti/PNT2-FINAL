@@ -2,8 +2,8 @@
 
   <section class="src-components-formulario">
     <div class="jumbotron">
-      <div v-show="validar">
-    <h1>Login</h1>
+      <div v-show="!this.$store.state.loggedIn" @reset-session="resetSession($event)">
+    <h1 >Login</h1>
     <hr>
     <hr>
     <br>
@@ -33,11 +33,22 @@
 {{mensaje}}
   <hr>
   </div>
-   <div v-show="!validar">
-    <Pagina :reg="this.usuario" :val="this.validar"/>
-     </div>
     </div>
+
+  
+
+    <div v-if="this.$store.state.loggedIn">
+    <Pagina :reg="this.usuario"/>
+    <button @click = "resetSession()">Resetear Session</button>
+     </div>
+
+     <div v-else>
+      {{ redirectToLogIn() }}
+     </div>
+
   </section>
+
+
 
 </template>
 
@@ -78,10 +89,16 @@ import Pagina from './Pagina.vue'
         }else{
           console.log("entro por el no ok")
           this.usuario=buscando
-             this.validar=false;
+             this.logIn();
+             console.log(this.$store.state.loggedIn)
            }
       },
 
+      redirectToLogIn() {
+        this.$router.push({path:"/formularioL"})  
+      },
+
+      /*
        async evaluarResultado(){
         if(this.res.nombre === undefined){
           console.log("entro por el ok")
@@ -93,11 +110,21 @@ import Pagina from './Pagina.vue'
           console.log("entro por el no ok")
           this.validar=false;
            }
+           
       },
+*/
 
+      resetSession() {
+            console.log("Entro al reset de Formulario LogIn")
+            this.formData = this.getDataInicial()
+            this.logOut()
+            this.formState._reset()
+            console.log(this.$store.state.loggedIn)
+          },
 
       getDataInicial(){
-         return {
+         
+        return {
           nombre:null,
           email:null,
           contraseña:null
