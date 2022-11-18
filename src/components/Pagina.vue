@@ -57,7 +57,6 @@
     },
     data () {
       return {
-        //url:"https://634271f73f83935a78433ad7.mockapi.io/users",
         formState:{},
         formData:this.getDataInicial(),
         caracteresMin:10
