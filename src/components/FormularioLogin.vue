@@ -30,7 +30,10 @@
           <br>
     <button type="submit" class="btn btn-success" :disabled="formState.$invalid">Submit</button>
   </vue-form>
-{{mensaje}}
+  <hr>
+  <h3 :class="{ success: ingresoOk, fail: !ingresoOk }">
+    {{mensaje}}
+  </h3>
   <hr>
   </div>
     </div>
@@ -71,9 +74,8 @@ import Pagina from './Pagina.vue'
         usuarios:[],
         mensaje:"",
         validar:true,
-        usuario:""
-       
-        
+        usuario:"",
+        ingresoOk: true
       }
     },
     methods: {
@@ -83,7 +85,8 @@ import Pagina from './Pagina.vue'
         if(buscando == undefined){
           console.log("entro por el ok")
           this.formData= this.getDataInicial()
-              this.mensaje="error usuario o contraseña equivocada"
+              this.mensaje="Error Usuario o Contraseña equivocada"
+              this.ingresoOk= false
               this.formState._reset()
               
         }else{
@@ -103,7 +106,7 @@ import Pagina from './Pagina.vue'
         if(this.res.nombre === undefined){
           console.log("entro por el ok")
           this.formData= this.getDataInicial()
-              this.mensaje="error usuario o contraseña equivocada"
+              this.mensaje="Error Usuario o Contraseña equivocada"
               this.formState._reset()
               
         }else{
@@ -142,13 +145,30 @@ import Pagina from './Pagina.vue'
 
 <style scoped lang="css">
   .src-components-formulario {
-
+    display: flex;
+    justify-content: center;
   }
   .jumbotron{
-    background-color: brown;
-    color: black;
+    background-color: #0873C4;
+    color: white;
+    width: auto;
+    margin-top: 50px;
   }
+
   hr{
-    background-color: black;
+    background-color: #054678;
   }
+
+  .success{
+    background-color: #0A90F7;
+    color: white;
+    border-radius: 6px;
+  }
+
+  .fail{
+    background-color: red;
+    color: white;
+    border-radius: 6px;
+  }
+
 </style>

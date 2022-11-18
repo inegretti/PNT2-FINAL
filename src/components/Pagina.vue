@@ -1,48 +1,53 @@
 <template>
-
   <section class="src-components-pagina">
-    <h1>Bienvenido {{this.reg.nombre}}</h1>
-    
-    <div >
-      <h1>Finalizadas</h1>
-      <div v-for="(tareaF,index) in this.reg.finalizadas" :key="index">
-        <h2 style="text-decoration-line: line-through">{{tareaF}}</h2>
+    <h3>Bienvenido {{ this.reg.nombre }}</h3>
+
+    <div class="main-container">
+      <div>
+        <h5>Pendientes</h5>
+        <div class="task-box" v-for="(tareaC, index) in this.reg.pendientes" :key="index">
+          <p>{{ tareaC }}</p>
+          <button class="button-finalizar" value="act" @click="finalizar(reg, tareaC)">Finalizar</button>
+          <button class="button-encursar" value="act" @click="encursar(reg, tareaC)">Encursar</button>
+        </div>
       </div>
-    
-    </div>
-    <br>
-    <div >
-      <h1>En curso</h1>
-        <div v-for="(tareaC,index) in this.reg.enCurso" :key="index">
-        <h2>{{tareaC}}</h2>
-        <button  value=act  @click="finalizar(reg,tareaC)"> finalizar </button>
+       <div>
+        <h5>En curso</h5>
+        <div class="task-box" v-for="(tareaC, index) in this.reg.enCurso" :key="index">
+          <p>{{ tareaC }}</p>
+          <button class="button-finalizar" value="act" @click="finalizar(reg, tareaC)">Finalizar</button>
         </div>
-    </div>
-    <br>
-    <div >
-      <h1>Pendientes</h1>
-   <div v-for="(tareaC,index) in this.reg.pendientes" :key="index">
-        <h2>{{tareaC}}</h2>
-        <button value=act @click="finalizar(reg,tareaC)"> finalizar </button>
-        <button value=act @click="encursar(reg,tareaC)"> encursar </button>
+      </div>
+      <div>
+        <h5>Finalizadas</h5>
+        <div class="task-box" v-for="(tareaF, index) in this.reg.finalizadas" :key="index">
+          <p style="text-decoration-line: line-through">{{ tareaF }}</p>
         </div>
+      </div>    
     </div>
-  <br>
-   <vue-form :state="formState" @submit.prevent="ingresar(reg)">
-          <validate tag="div">
-            <span>Ingresar nueva actividad: </span>
-            <input v-model="formData.texto" required name="name" :minlength="3" />
-            <field-messages name="name" show="$dirty">
-              <div slot="required">Complete el campo</div>
-              <div slot="minlength">Este campo debe poseer al menos 3 caracteres</div>
-            </field-messages>
-          </validate>
-          <br>
-    <button type="submit" class="btn btn-success" :disabled="formState.$invalid">Submit</button>
-  </vue-form>
 
+    <br />
+    <vue-form :state="formState" @submit.prevent="ingresar(reg)">
+      <validate tag="div">
+        <span>Ingresar nueva actividad: </span>
+        <input v-model="formData.texto" required name="name" :minlength="3" />
+        <field-messages name="name" show="$dirty">
+          <div slot="required">Complete el campo</div>
+          <div slot="minlength">
+            Este campo debe poseer al menos 3 caracteres
+          </div>
+        </field-messages>
+      </validate>
+      <br />
+      <button
+        type="submit"
+        class="btn btn-success"
+        :disabled="formState.$invalid"
+      >
+        Submit
+      </button>
+    </vue-form>
   </section>
-
 </template>
 
 <script>
@@ -57,7 +62,6 @@
     },
     data () {
       return {
-        //url:"https://634271f73f83935a78433ad7.mockapi.io/users",
         formState:{},
         formData:this.getDataInicial(),
         caracteresMin:10
@@ -119,13 +123,53 @@
     computed: {
 
     }
-}
-
-
+  }
 </script>
 
 <style scoped lang="css">
   .src-components-pagina {
+  }
+  .main-container{
+    display: flex;
+    width: 800px;
+    justify-content: space-around;
+    color: #054678;
+    background-color: white;
+    border-radius: 4px;
+    padding: 10px 0;
+  }
+
+  .task-box{
+    border-radius: 4px;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: rgb(234, 229, 229);
+  }
+
+  .button-encursar {
+    border: none;
+    background-color: #55B2F9;
+    border-radius: 12px;
+    margin: 0 5px;
+    color: black;
+  }
+
+  .button-encursar:hover{
+    box-shadow: 0px 10px 13px -7px #295678, 1px 1px 1px 5px rgba(255,255,255,0.13);
 
   }
+
+  .button-finalizar {
+    border: none;
+    background-color: #295678;
+    border-radius: 12px;
+    margin: 0 5px;
+    color: white;
+  }
+
+  .button-finalizar:hover{
+    box-shadow: 0px 10px 13px -7px #295678, 1px 1px 1px 5px rgba(255,255,255,0.13);
+
+  }
+
 </style>
