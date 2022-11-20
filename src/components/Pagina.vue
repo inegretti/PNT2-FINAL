@@ -1,40 +1,51 @@
 <template>
   <section class="src-components-pagina">
-    <h3>Bienvenido {{ this.reg.nombre }}</h3>
-
+    <h3>Bienvenido {{ this.$store.state.usuario.nombre }}</h3>
+    <!--si el usuario ingresado no tiene el nombre admin no le va a aparecer-->
+      <div v-show="this.$store.state.usuario.nombre == 'admin'">
+        <h2>usuarios</h2>
+        <div class="task-box" v-for="(usuario, index) in this.$store.state.usuarios" :key="index">
+           <!--le tuve que poner el background por que con color solo no me lo tomaba y eran letras en color tiza
+           sobre un fondo blanco-->
+          <p :style="{ 'background-color': 'red' }">{{ usuario }}</p>
+          <button class="button-finalizar" value="act" @click="eliminarUsuario(usuario)">Dar de Baja</button>
+        </div>
+     </div>
+<br>
     <div class="main-container">
       <div>
         <h5>Pendientes</h5>
-        <div class="task-box" v-for="(tareaC, index) in this.reg.pendientes" :key="index">
+        <div class="task-box" v-for="(tareaC, index) in this.$store.state.usuario.pendientes" :key="index">
           <p>{{ tareaC }}</p>
-          <button class="button-finalizar" value="act" @click="finalizar(reg, tareaC)">Finalizar</button>
-          <button class="button-encursar" value="act" @click="encursar(reg, tareaC)">Encursar</button>
+          <button class="button-finalizar" value="act" @click="finalizar($store.state.usuario, tareaC)">Finalizar</button>
+          <button class="button-encursar" value="act" @click="encursar($store.state.usuario, tareaC)">Encursar</button>
+          <button class="button-finalizar" value="act" @click="borrar($store.state.usuario, tareaC)">Borrar</button>
         </div>
       </div>
        <div>
         <h5>En curso</h5>
-        <div class="task-box" v-for="(tareaC, index) in this.reg.enCurso" :key="index">
+        <div class="task-box" v-for="(tareaC, index) in this.$store.state.usuario.enCurso" :key="index">
           <p>{{ tareaC }}</p>
-          <button class="button-finalizar" value="act" @click="finalizar(reg, tareaC)">Finalizar</button>
+          <button class="button-finalizar" value="act" @click="finalizar($store.state.usuario, tareaC)">Finalizar</button>
         </div>
       </div>
       <div>
         <h5>Finalizadas</h5>
-        <div class="task-box" v-for="(tareaF, index) in this.reg.finalizadas" :key="index">
+        <div class="task-box" v-for="(tareaF, index) in this.$store.state.usuario.finalizadas" :key="index">
           <p style="text-decoration-line: line-through">{{ tareaF }}</p>
         </div>
       </div>    
     </div>
 
     <br />
-    <vue-form :state="formState" @submit.prevent="ingresar(reg)">
+    <vue-form :state="formState" @submit.prevent="ingresar($store.state.usuario)">
       <validate tag="div">
         <span>Ingresar nueva actividad: </span>
-        <input v-model="formData.texto" required name="name" :minlength="3" />
+        <input v-model="formData.texto" required name="name" :minlength="this.$store.state.caracteresMin" />
         <field-messages name="name" show="$dirty">
           <div slot="required">Complete el campo</div>
           <div slot="minlength">
-            Este campo debe poseer al menos 3 caracteres
+            Este campo debe poseer al menos {{this.$store.state.caracteresMin}} caracteres
           </div>
         </field-messages>
       </validate>
@@ -54,9 +65,12 @@
 
   export default  {
     name: 'src-components-pagina',
-    props: ["reg"],
+    props: ["reg","val","usuarios"],
+    beforeMount () {
+      this.us=this.usuarios
+    },
     mounted () {
-        if(this.$store.state.loggedIn!=true){
+        if(this.$store.state.loggedIn == false){
           history.back()
         }
     },
@@ -64,18 +78,17 @@
       return {
         formState:{},
         formData:this.getDataInicial(),
-        caracteresMin:10
+        us:[]        
       }
     },
     methods: {
-      sumar(){
-        this.axios.put
-      },
       getDataInicial(){
          return {
           texto:null,
          }
       },
+
+      
      async encursar(valor,tarea){
       console.log("tarea "+tarea+" "+typeof(tarea))
       const er=valor.pendientes.indexOf(tarea);
@@ -87,6 +100,7 @@
         this.axios.put(borrar,{nombre:valor.nombre,contrasenia:valor.contrasenia,email:valor.email,pendientes:valor.pendientes,enCurso:valor.enCurso,finalizadas:valor.finalizadas})
 
       },
+
       async finalizar(valor,tarea){
         let er;
         if(valor.pendientes.indexOf(tarea)!=-1){
@@ -100,25 +114,56 @@
         valor.enCurso.splice(er, 1);
         await valor.finalizadas.push(tarea)
         }
-        //const er=valor.enCurso.indexOf(tarea);
-        //console.log("er "+er)
-        //valor.enCurso.splice(er, 1);
-        //console.log("pendientes "+valor.enCurso)
-        //await valor.finalizadas.push(tarea)
         const borrar=this.$store.state.url+"/"+valor.id
         this.axios.put(borrar,{nombre:valor.nombre,contrasenia:valor.contrasenia,email:valor.email,pendientes:valor.pendientes,enCurso:valor.enCurso,finalizadas:valor.finalizadas})
         console.log(valor)
       },
+
       async ingresar(valor){
-        console.log("validar "+this.val)
-        console.log("reg "+this.reg.nombre+" "+typeof(this.reg.nombre))
+        console.log("validar "+valor.nombre)
         const borrar=this.$store.state.url+"/"+valor.id
         await valor.pendientes.push(this.formData.texto)
         await this.axios.put(borrar,{nombre:valor.nombre,contrasenia:valor.contrasenia,email:valor.email,pendientes:valor.pendientes})
         this.formData=this.getDataInicial()
         this.formState._reset()
-      }
+      },
 
+      async borrar(valor,tarea){
+        //esto borra la tarea de cualquier lista.
+       let er;
+        if(valor.pendientes.indexOf(tarea)!=-1){
+        er=valor.pendientes.indexOf(tarea);
+        console.log("er "+er)
+        valor.pendientes.splice(er, 1);
+        }else{
+        er=valor.enCurso.indexOf(tarea);
+        console.log("er "+er)
+        valor.enCurso.splice(er, 1);
+        }
+        const borrar=this.$store.state.url+"/"+valor.id
+        this.axios.put(borrar,{nombre:valor.nombre,contrasenia:valor.contrasenia,email:valor.email,pendientes:valor.pendientes,enCurso:valor.enCurso,finalizadas:valor.finalizadas})
+        console.log(valor)
+      },
+      
+      async eliminarUsuario(usuario){
+        
+        //la direccion del elemento a borrar
+        const borrar=this.$store.state.url+"/"+usuario.id
+        //esta linea lo borra al usuario de 1 de la base de datos, mock api
+        await this.axios.delete(borrar)
+             .then(response => {
+                 console.log(response);
+             })
+             .catch(function (error) {
+                console.log(error.response)
+             })
+             const us=this.$store.state.usuarios.indexOf(usuario)
+             console.log("us"+us)
+             this.$store.state.usuarios.splice(us, 1)
+        this.$emit('eliminar', usuario)// esto manda la orden a la lista padre para borrar el contenido.
+
+      }
+      
     },
     computed: {
 
@@ -171,5 +216,6 @@
     box-shadow: 0px 10px 13px -7px #295678, 1px 1px 1px 5px rgba(255,255,255,0.13);
 
   }
+  
 
 </style>
