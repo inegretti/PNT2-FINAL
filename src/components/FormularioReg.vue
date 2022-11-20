@@ -10,21 +10,21 @@
  
           <validate tag="div">
             <span>Nombre: </span>
-            <input v-model="formData.nombre" required name="name" :minlength="nombreMin" :maxlength="nombreMax"/>
+            <input v-model="formData.nombre" required name="name" :minlength="this.$store.state.caracteresMin" :maxlength="this.$store.state.caracteresMax"/>
             <field-messages name="name" show="$dirty">
               <div slot="required">Complete el campo</div>
-              <div slot="minlength">Este campo debe poseer al menos {{nombreMin}} caracteres</div>
-              <div slot="maxlength">Este campo debe no puede poseer mas de {{nombreMax}} caracteres</div>
+              <div slot="minlength">Este campo debe poseer al menos {{this.$store.state.caracteresMin}} caracteres</div>
+              <div slot="maxlength">Este campo debe no puede poseer mas de {{this.$store.state.caracteresMax}} caracteres</div>
             </field-messages>
           </validate>
           <br>
           <validate tag="div">
             <span>Contraseña: </span>
-            <input v-model="formData.contraseña" required name="contraseña" :minlength="nombreMin" :maxlength="nombreMax"/>
+            <input v-model="formData.contraseña" required name="contraseña" :minlength="this.$store.state.caracteresMin" :maxlength="this.$store.state.caracteresMax"/>
             <field-messages name="contraseña" show="$dirty">
               <div slot="required">Complete el campo</div>
-              <div slot="minlength">Este campo debe poseer al menos {{nombreMin}} caracteres</div>
-              <div slot="maxlength">Este campo debe no puede poseer mas de {{nombreMax}} caracteres</div>
+              <div slot="minlength">Este campo debe poseer al menos {{this.$store.state.caracteresMin}} caracteres</div>
+              <div slot="maxlength">Este campo debe no puede poseer mas de {{this.$store.state.caracteresMax}} caracteres</div>
             </field-messages>
           </validate>
           <br>
@@ -63,9 +63,6 @@
       return {
         formState:{},
         formData:this.getDataInicial(),
-        nombreMin:5,
-        nombreMax:15,
-        usuarios:new Array(),
         mensaje:"",
         ingresoOk: true
        
@@ -74,7 +71,13 @@
     },
     methods: {
       async enviar(){
-        await this.$emit('ingreso-usuario',{nombre:this.formData.nombre,contraseña:this.formData.contraseña,email:this.formData.email})
+
+         await this.axios(this.$store.state.url).then(respuesta=>{this.$store.state.usuarios=respuesta.data}).catch(error=>console.error(error))
+        let ele=await this.$store.state.usuarios.find(element => element.email == this.formData.email);
+        if(ele==undefined){
+          ele=await this.$store.state.usuarios.find(element => element.nombre == this.formData.nombre);
+          if(ele==undefined){
+              await this.$emit('envio-usuario',{nombre:this.formData.nombre,contraseña:this.formData.contraseña,email:this.formData.email})
         this.formData= this.getDataInicial()
         this.formState._reset()
         this.mensaje="Ingreso correcto";
@@ -83,7 +86,16 @@
           alert("redirigiendo a login")
         this.$router.push({path:"/formularioL"})  
         }, 1000);
-        
+          }else{
+            this.mensaje="ya hay un usuario con ese nombre"
+            this.formData= this.getDataInicial()
+             this.formState._reset()
+          }
+        }else{
+            this.mensaje="mail ya registrado" 
+            this.formData= this.getDataInicial()
+             this.formState._reset()
+        }
       },
       getDataInicial(){
          return {
