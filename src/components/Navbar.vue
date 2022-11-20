@@ -9,7 +9,7 @@
     <ul class="navbar-nav">
       <li class="nav-item">
         <router-link to="/formulario">
-        <a class="nav-link" href="#" @click="resetSession()">Registracion</a>
+        <a class="nav-link" href="#">Registro</a>
         </router-link>
       </li>
       <li class="nav-item">
@@ -38,10 +38,7 @@
       }
     },
     methods: {
-      resetSession() {
-        console.log("Entro al resetSession de NavBar pero posta")
-        this.logOut()
-      }
+      
     },
     computed: {
 
