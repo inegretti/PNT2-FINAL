@@ -1,10 +1,9 @@
 //import { resolve } from 'core-js/fn/promise'
 import Vue from 'vue'
 import Vuex from 'vuex'
-//import "./axios"
+import "./axios"
 
 Vue.use(Vuex)
-
 const delay = ms => new Promise( (resolve, reject) => {
     if(typeof ms == 'number') {
         setTimeout(resolve,ms)
@@ -17,7 +16,12 @@ const delay = ms => new Promise( (resolve, reject) => {
 export default new Vuex.Store({
     state:{
         url:"https://634271f73f83935a78433ad7.mockapi.io/users",
-        loggedIn: false
+        caracteresMin:5,//esto se repetia en los formularios
+        caracteresMax:15, //por ello lo pase aca.
+        loggedIn: false,
+        usuario:"",
+        usuarios:[]
+        
      },
     actions:{ 
         async logIn({commit}) {
