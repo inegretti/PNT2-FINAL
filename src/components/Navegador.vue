@@ -26,7 +26,7 @@ import NavBar from "./Navbar.vue"
       }
     },
     methods: {
-     async ingresarUsuarios(usuario){
+      async ingresarUsuarios(usuario){
         await this.axios.post(this.$store.state.url, {nombre:usuario.nombre,contrasenia:usuario.contraseña,email:usuario.email,pendientes:[],finalizadas:[],enCurso:[]})
       },
     },

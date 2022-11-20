@@ -2,11 +2,11 @@ import Vue from 'vue'
 
 const miMixinGlobal = {
     methods: {
-       async logIn() {
+        async logIn() {
           //this.contador--
           console.warn('-------------------------------------')
           console.warn('dispatch -> logIn', new Date().toLocaleString())
-         await this.$store.dispatch('logIn')
+          await this.$store.dispatch('logIn')
         },
         async logOut() {
             //this.contador--
@@ -16,13 +16,7 @@ const miMixinGlobal = {
           },
     },
     computed: {
-        /*
-        mostrarContadorVuex() {
-            let contador = this.$store.state.contador
-            console.error('mostrarContadorVuex mixin', contador)
-            return contador
-        }
-        */
+       
     }    
 }
 

@@ -65,8 +65,6 @@
         formData:this.getDataInicial(),
         mensaje:"",
         ingresoOk: true
-       
-        
       }
     },
     methods: {
