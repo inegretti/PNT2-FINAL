@@ -43,6 +43,14 @@ export default new Vuex.Store({
             catch(error) {
                 console.error(error)
             }
+        },
+        async ingresar({commit},valor){
+            
+            commit("ingreso",valor)
+        },
+        async usuarios({commit},valor){
+            
+            commit("ingresoUsuarios",valor)
         }           
     },
     mutations:{ 
@@ -53,6 +61,12 @@ export default new Vuex.Store({
         logOut(state, bool) {
             console.warn('mutations -> logOut',  bool, new Date().toLocaleString()) 
             state.loggedIn = bool
+        },
+        ingreso(state,valor){
+            state.usuario=valor;
+        },
+        ingresoUsuarios(state,valor){
+            state.usuarios=valor;
         }
     }
 })

@@ -14,6 +14,17 @@ const miMixinGlobal = {
             console.warn('dispatch -> logOut', new Date().toLocaleString())
             await this.$store.dispatch('logOut')
           },
+
+        async ingresarUsuario(valor){
+          console.warn('-------------------------------------')
+          console.warn('dispatch -> ingreso de usuaro', new Date().toLocaleString())
+          await this.$store.dispatch('ingresar',valor)
+        },
+        async ingresarUsuarios(valor){
+          console.warn('-------------------------------------')
+          console.warn('dispatch -> ingreso de lista usuarios a memoria', new Date().toLocaleString())
+          await this.$store.dispatch('usuarios',valor)
+        }
     },
     computed: {
        

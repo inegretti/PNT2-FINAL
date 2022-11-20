@@ -70,10 +70,8 @@
               
         }else{
           console.log("entro por el no ok")
-          //this.usuario=buscando
-          this.$store.state.usuario=await buscando
-          this.$store.state.usuarios=await this.usuarios
-          console.log("res: "+this.$store.state.usuario.nombre)
+          await this.ingresarUsuario(buscando)
+          await this.ingresarUsuarios(this.usuarios)
               await this.logIn();
              
             await this.$router.push({path:"/pagina"})  
