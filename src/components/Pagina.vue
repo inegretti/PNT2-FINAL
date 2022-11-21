@@ -3,7 +3,7 @@
     <h3>Bienvenido {{ this.$store.state.usuario.nombre }}</h3>
     <!--si el usuario ingresado no tiene el nombre admin no le va a aparecer-->
       <div v-show="esAdmin">
-        <h2>usuarios</h2>
+        <h2>{{"usuarios" | pasarAMayuscula}}</h2>
         <div class="task-box" v-for="(usuario, index) in this.$store.state.usuarios" :key="index">
            <!--le tuve que poner el background por que con color solo no me lo tomaba y eran letras en color tiza
            sobre un fondo blanco-->

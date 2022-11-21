@@ -69,7 +69,6 @@
     },
     methods: {
       async enviar(){
-        
          await this.axios(this.$store.state.url).then(respuesta=>{this.ingresarUsuarios(respuesta.data)}).catch(error=>console.error(error))
         let ele=await this.$store.state.usuarios.find(element => element.email == this.formData.email);
         if(ele==undefined){
