@@ -1,18 +1,21 @@
 <template>
   <section class="src-components-pagina">
     <h3>Bienvenido {{ this.$store.state.usuario.nombre }}</h3>
-    <!--si el usuario ingresado no tiene el nombre admin no le va a aparecer-->
-      <div v-show="esAdmin">
-        <h2>{{"usuarios" | pasarAMayuscula}}</h2>
+      <div v-show="esAdmin" :style="{'background-color':'lightsteelblue','border':'1px solid black'}">
+        <h2>{{"Usuarios"}}</h2>
         <div class="task-box" v-for="(usuario, index) in this.$store.state.usuarios" :key="index">
-           <!--le tuve que poner el background por que con color solo no me lo tomaba y eran letras en color tiza
-           sobre un fondo blanco-->
-          <p :style="{ 'background-color': 'red' }">{{ usuario }}</p>
+          <p>{{ usuario }}</p>
           <button class="button-finalizar" value="act" @click="eliminarUsuario(usuario)">Dar de Baja</button>
         </div>
+        <br>
      </div>
 <br>
-    <div class="main-container">
+
+
+  <h4>Tareas</h4>
+    <div class="main-container"  :style="{'background-color':'lightsteelblue','margin':'auto',
+  'width':'50%',
+  'padding':'10px'}">
       <div>
         <h5>Pendientes</h5>
         <div class="task-box" v-for="(tareaC, index) in this.$store.state.usuario.pendientes" :key="index">
@@ -25,7 +28,7 @@
        <div>
         <h5>En curso</h5>
         <div class="task-box" v-for="(tareaC, index) in this.$store.state.usuario.enCurso" :key="index">
-          <p>{{ tareaC }}</p>
+          <p>{{ tareaC | pasarAMayuscula }}</p>
           <button class="button-finalizar" value="act" @click="finalizar($store.state.usuario, tareaC)">Finalizar</button>
         </div>
       </div>
@@ -187,6 +190,7 @@
   .src-components-pagina {
   }
   .main-container{
+    
     display: flex;
     width: 800px;
     justify-content: space-around;
