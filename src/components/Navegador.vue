@@ -1,7 +1,7 @@
 <template>
 
   <section class="src-components-navegador">
-   <NavBar/>
+    <NavBar />
     <router-view :res="usuarios" @envio-usuario="ingresarUsuarios($event)"></router-view>
   </section>
 
@@ -9,37 +9,34 @@
 
 <script>
 import NavBar from "./Navbar.vue"
-  export default  {
-    name: 'src-components-navegador',
-    components: {
+export default {
+  name: 'src-components-navegador',
+  components: {
     NavBar
   },
-    props: [],
-    mounted () {
-
-    },
-    data () {
-      return {
-        usuarios:[],
-        reg:""
-
-      }
-    },
-    methods: {
-      async ingresarUsuarios(usuario){
-        await this.axios.post(this.$store.state.url, {nombre:usuario.nombre,contrasenia:usuario.contraseña,email:usuario.email,pendientes:[],finalizadas:[],enCurso:[]})
-      },
-    },
-    computed: {
-       
+  props: [],
+  data() {
+    return {
+      usuarios: [],
+      reg: ""
     }
+  },
+
+  methods: {
+    async ingresarUsuarios(usuario) {
+      await this.axios.post(this.$store.state.url,
+        {
+          nombre: usuario.nombre,
+          contrasenia: usuario.contraseña,
+          email: usuario.email,
+          pendientes: [],
+          finalizadas: [],
+          enCurso: []
+        })
+    },
+  },
+  computed: {
+  }
 }
 
-
 </script>
-
-<style scoped lang="css">
-  .src-components-navegador {
-
-  }
-</style>

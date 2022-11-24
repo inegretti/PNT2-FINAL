@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    
     <Navegador/>
   </div>
 </template>
@@ -12,13 +11,14 @@ import Navegador from "./components/Navegador.vue"
 export default {
   name: 'App',
   components: {
-    
     Navegador
   }
 }
+
 </script>
 
 <style>
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -27,4 +27,5 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
 </style>

@@ -7,6 +7,7 @@ import "./axios"
 import store from "./store"
 import './globalMixins'
 import './globalFilters'
+
 Vue.config.productionTip = false
 
 new Vue({

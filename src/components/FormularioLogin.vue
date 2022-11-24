@@ -5,16 +5,13 @@
       <hr />
       <hr />
       <br />
+
       <vue-form :state="formState" @submit.prevent="enviar()">
         <validate tag="div">
           <span>Nombre: </span>
-          <input
-            v-model="formData.nombre"
-            required
-            name="name"
-            :minlength="this.$store.state.caracteresMin"
-            :maxlength="this.$store.state.caracteresMax"
-          />
+          <input name="name" v-model="formData.nombre" required :minlength="this.$store.state.caracteresMin"
+            :maxlength="this.$store.state.caracteresMax" />
+
           <field-messages name="name" show="$dirty">
             <div slot="required">Complete el campo</div>
             <div slot="minlength">
@@ -22,21 +19,18 @@
               {{ this.$store.state.caracteresMin }} caracteres
             </div>
             <div slot="maxlength">
-              Este campo debe no puede poseer mas de
+              Este campo no puede poseer mas de
               {{ this.$store.state.caracteresMax }} caracteres
             </div>
           </field-messages>
         </validate>
         <br />
+
         <validate tag="div">
           <span>Contraseña: </span>
-          <input
-            v-model="formData.contraseña"
-            required
-            name="contraseña"
-            :minlength="this.$store.state.caracteresMin"
-            :maxlength="this.$store.state.caracteresMax"
-          />
+          <input name="contraseña" v-model="formData.contraseña" required :minlength="this.$store.state.caracteresMin"
+            :maxlength="this.$store.state.caracteresMax" />
+
           <field-messages name="contraseña" show="$dirty">
             <div slot="required">Complete el campo</div>
             <div slot="minlength">
@@ -44,20 +38,15 @@
               {{ this.$store.state.caracteresMin }} caracteres
             </div>
             <div slot="maxlength">
-              Este campo debe no puede poseer mas de
+              Este campo no puede poseer mas de
               {{ this.$store.state.caracteresMax }} caracteres
             </div>
           </field-messages>
         </validate>
         <br />
-        <button
-          type="submit"
-          class="btn btn-success"
-          :disabled="formState.$invalid"
-        >
-          Submit
-        </button>
+        <button type="submit" class="btn btn-success" :disabled="formState.$invalid">Confirmar</button>
       </vue-form>
+
       <hr />
       <h3 :class="{ success: ingresoOk, fail: !ingresoOk }">
         {{ mensaje }}
@@ -72,7 +61,6 @@ export default {
   components: {},
   name: "src-components-formulario",
   props: [],
-  mounted() {},
   data() {
     return {
       formState: {},
@@ -82,6 +70,7 @@ export default {
       ingresoOk: true,
     };
   },
+  
   methods: {
     async enviar() {
       await this.axios(this.$store.state.url)
@@ -89,24 +78,23 @@ export default {
           this.usuarios = respuesta.data;
         })
         .catch((error) => console.error(error));
-      const buscando = await this.usuarios.find(
+
+      const buscando = this.usuarios.find(
         (element) =>
           element.nombre == this.formData.nombre &&
           element.contrasenia == this.formData.contraseña
       );
+
       if (buscando == undefined) {
-        console.log("entro por el ok");
         this.formData = this.getDataInicial();
-        this.mensaje = "Error Usuario o Contraseña equivocada";
+        this.mensaje = "Usuario o Contraseña incorrecta";
         this.ingresoOk = false;
         this.formState._reset();
       } else {
-        console.log("entro por el no ok");
-        await this.ingresarUsuario(buscando);
-        await this.ingresarUsuarios(this.usuarios);
-        await this.logIn();
-
-        await this.$router.push({ path: "/pagina" });
+        this.ingresarUsuario(buscando);
+        this.ingresarUsuarios(this.usuarios);
+        this.logIn();
+        this.$router.push({ path: "/pagina" });
       }
     },
 
@@ -126,6 +114,7 @@ export default {
   },
   computed: {},
 };
+
 </script>
 
 <style scoped lang="css">
@@ -133,6 +122,7 @@ export default {
   display: flex;
   justify-content: center;
 }
+
 .jumbotron {
   background-color: #0873c4;
   color: white;
@@ -155,4 +145,5 @@ hr {
   color: white;
   border-radius: 6px;
 }
+
 </style>
